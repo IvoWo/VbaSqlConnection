@@ -1,0 +1,41 @@
+Sub DropDownWerteBefüllen()
+    
+    'hier wird die Datenbankverbindung hergestellt, dafür wird ein Connectionstring inklusive der Anmeldedaten benötigt
+    Dim cn As ADODB.Connection
+    Dim ConnectionString, Server, Database As String
+    
+    Server = ""
+    Database = ""
+    Table1 = ""
+    Table2 = ""
+    ConnectionString = "Provider=SQLOLEDB; Server=" & Server & ";Database=" & Database & ";Integrated Security=SSPI;"
+    Set cn = New ADODB.Connection
+    cn.Open ConnectionString
+    
+    
+    'löscht zellinhalte vom DropdownWerte-Sheet, damit nicht irgendwie Duplikate entstehen können
+    ActiveWorkbook.Worksheets("DropdownWerte").Range("A2:C1000").Clear
+    
+    'alle Abfragen ignorieren leere Werte in Datenbank
+    
+    'Query 1
+    StrQuery = ""
+    Set RecordSet1 = New ADODB.Recordset
+    Kunden.Open StrQuery, cn
+    ActiveWorkbook.Worksheets("Worksheetname").Range("A2").CopyFromRecordset RecordSet1
+    
+    'Query 2
+    StrQuery = ""
+    Set RecordSet2 = New ADODB.Recordset
+    RecordSet2.Open StrQuery, cn
+    ActiveWorkbook.Worksheets("Worksheetname").Range("B2").CopyFromRecordset RecordSet2
+    
+    'Query 3
+    StrQuery = ""
+    Set RecordSet3 = New ADODB.Recordset
+    RecordSet3.Open StrQuery, cn
+    ActiveWorkbook.Worksheets("Worksheetname").Range("C2").CopyFromRecordset RecordSet3
+    
+    cn.Close
+    Set cn = Nothing
+End Sub
